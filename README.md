@@ -48,9 +48,16 @@ ssh -i ssh.key -6 user@[IPv6]`
 
 `nmap -p25 --script=smtp* <[HOST IP]>`
 
-===> TODO
-
 ### DNS (53)
+
+`nmap -sU -p 22 --script=*dns* <[HOST IP]>
+
+ host -t ns megacorpone.com
+
+ dnsrecon -d megacorpone.com -t axfr
+ 
+ dnsenum megacorpone.com
+`
 
 ### HTTP (80)
 
@@ -61,7 +68,9 @@ ssh -i ssh.key -6 user@[IPv6]`
 
 #### 2- VHOSTS
 
-{VHOSTS GUIDE}
+`nmap --script=http-vhosts --script-args=filelist="vhosts.txt" -p 80 <[HOST IP]>`
+
+`VHostScan -t megacorpone.com -w ./wordlists/wordlist.txt`
 
 #### 3- VISUAL
 
@@ -120,21 +129,39 @@ ssh -i ssh.key -6 user@[IPv6]`
 
 ### HTTPS (443)
 
-{NMAP SSL DETECT VULNS}
+`nmap -sU --open -443 --script=ssl* <[HOST IP]>`
 
 ### SMB (445)
 
-{NMAP SMB}
+`nmap -p 445 -vv --script="smb-vuln-*,smb-enum-*" <[HOST IP]>
 
-{OTHER TOOLS}
+ENUM4LINUX
+enum4linux -a <[HOST IP]>
+
+NULL CONNECT
+rpccclient -U "" <[HOST IP]>
+
+LIST SHARES
+smbclient -L <[HOST IP]> -N
+
+CONNECT TO A SHARE
+smbclient //<[HOST IP]>//share
+
+CONNECT TO A SHARE - NO USER/PASS
+smbclient //<[HOST IP]>/IPC -U ""%""
+
+MOUNT SHARE
+mount -t cifs -o user=USERNAME,sec=ntlm,dir_mode=0077 "//<[HOST IP]>/My Share" /mnt/cifs
+mount -t cifs -o "//<[HOST IP]>/IPC" /mnt/cifs
+`
 
 ## 5) EXPLOIT (USER 1)
 
-{SEARCHSPLOIT / EXPLOIT-DB}
+searchsploit / exploit-db
 
-{METASPLOIT}
+metasploit
 
-{CUSTOM EXPLOITATION}
+custom exploitation
 
 ## 6) POST EXPLOTATION / INTERNAL ENUM (USER 1)
 
