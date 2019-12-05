@@ -50,14 +50,14 @@ ssh -i ssh.key -6 user@[IPv6]`
 
 ### DNS (53)
 
-`nmap -sU -p 22 --script=*dns* <[HOST IP]>
+```nmap -sU -p 22 --script=*dns* <[HOST IP]>
 
  host -t ns megacorpone.com
 
  dnsrecon -d megacorpone.com -t axfr
  
  dnsenum megacorpone.com
-`
+```
 
 ### HTTP (80)
 
@@ -78,7 +78,7 @@ ssh -i ssh.key -6 user@[IPv6]`
 
 #### 4- BRUTEFORCE WEB CONTENTS
 
-`==>dirbuster
+```==>dirbuster
 
 ==>dirb
 
@@ -107,7 +107,7 @@ ssh -i ssh.key -6 user@[IPv6]`
  -w : Don't stop on WARNING messages.
  -X <extensions> / -x <exts_file> : Append each word with this extensions.
  -z <milisecs> : Add a miliseconds delay to not cause excessive Flood.
-`
+```
 
 #### 5- SCAN TOOLS
 
@@ -133,7 +133,7 @@ ssh -i ssh.key -6 user@[IPv6]`
 
 ### SMB (445)
 
-`nmap -p 445 -vv --script="smb-vuln-*,smb-enum-*" <[HOST IP]>
+```nmap -p 445 -vv --script="smb-vuln-*,smb-enum-*" <[HOST IP]>
 
 ENUM4LINUX
 enum4linux -a <[HOST IP]>
@@ -153,7 +153,7 @@ smbclient //<[HOST IP]>/IPC -U ""%""
 MOUNT SHARE
 mount -t cifs -o user=USERNAME,sec=ntlm,dir_mode=0077 "//<[HOST IP]>/My Share" /mnt/cifs
 mount -t cifs -o "//<[HOST IP]>/IPC" /mnt/cifs
-`
+```
 
 ## 5) EXPLOIT (USER 1)
 
