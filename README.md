@@ -169,13 +169,14 @@ custom exploitation
 
 #### LINUX
 {SCRIPTS SH/PYTHON}
-LINENUM
+
+- LINENUM
 https://github.com/rebootuser/LinEnum
-LINUX PRIV CHECKER
+- LINUX PRIV CHECKER
 https://github.com/sleventyeleven/linuxprivchecker/
-LINUX EXPLOIT SUGGESTER
+- LINUX EXPLOIT SUGGESTER
 https://github.com/mzet-/linux-exploit-suggester
-LINUX EXPLOIT SUGGESTER 2
+- LINUX EXPLOIT SUGGESTER 2
 https://github.com/jondonas/linux-exploit-suggester-2
 
 {MANUAL}
@@ -183,15 +184,16 @@ https://github.com/mubix/post-exploitation/wiki/Linux-Post-Exploitation-Command-
 
 #### WINDOWS
 {SCRIPTS POWERSHELL}
-POWERUP
+
+- POWERUP
 https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc
-SHERLOK
+- SHERLOK
 https://github.com/rasta-mouse/Sherlock
-WATSON
+- WATSON
 https://github.com/rasta-mouse/Watson
-JAWS
+- JAWS
 https://github.com/411Hall/JAWS
-POWERLESS
+- POWERLESS
 https://github.com/M4ximuss/Powerless
 
 {MANUAL}
