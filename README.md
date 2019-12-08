@@ -122,6 +122,18 @@ SSH CONNECT
 - SQLMAP
 - OWASP ZAP
 
+### KERBEROS (88)
+
+KERBEROASTING:
+
+1) GET TICKET
+https://github.com/SecureAuthCorp/impacket/blob/master/examples/GetUserSPNs.py
+
+2) BRUTEFORCE TICKET USING JOHN
+
+3) GET SESSION USING ADMIN CREDENTIALS
+https://github.com/SecureAuthCorp/impacket/blob/master/examples/psexec.py
+
 ### SMB (139/445)
 
 `nmap -p 445 -vv --script="smb-vuln-*,smb-enum-*" <[HOST IP]>`
@@ -162,6 +174,9 @@ mount -t cifs -o "//<[HOST IP]>/IPC" /mnt/cifs
 ### HTTPS (443)
 
 `nmap -sU --open -443 --script=ssl* <[HOST IP]>`
+
+### EXEC/LOGIN/SHELL (512/513/514)
+`rlogin -l root <[HOST IP]>`
 
 ## 5) EXPLOIT (USER 1)
 
