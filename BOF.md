@@ -47,12 +47,12 @@ RESULT: EIP OVERWRITE WITH "A" (41414141)
 ## 3- LOCATE OFFSET 
 
 {PATTERN_CREATE}
-/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l <length>
+`/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l <length>`
 
 RESULT: EIP VALUE
 
 {PATTERN_OFFSET}
-/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l <length> -q [EIP VALUE REVERSED]
+`/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l <length> -q [EIP VALUE REVERSED]`
   
 RESULT: OFFSET
 
