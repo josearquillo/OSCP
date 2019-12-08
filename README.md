@@ -40,9 +40,9 @@ FTP CONNECT
 
 SSH CONNECT
 
-`ssh user@[IP]
-ssh -i ssh.key user@[IP]
-ssh -i ssh.key -6 user@[IPv6]`
+`ssh user@[IP]`
+`ssh -i ssh.key user@[IP]`
+`ssh -i ssh.key -6 user@[IPv6]`
 
 ### SMTP (25)
 
@@ -72,14 +72,17 @@ ssh -i ssh.key -6 user@[IPv6]`
 
 `VHostScan -t megacorpone.com -w ./wordlists/wordlist.txt`
 
-#### 3- VISUAL RECON
+#### 3- VISUAL
 
-##### LOOK FOR SQL-I, PATH TRAVERSAL, FILE UPLOAD...
+- Source code: Look for credential, hints... 
+
+- Recon: Look for SQL-I, PATH TRAVERSAL, FILE UPLOAD...
 
 #### 4- BRUTEFORCE WEB CONTENTS
 
-```==>dirbuster
+`==>dirbuster`
 
+```
 ==>dirb
 
 ======================== HOTKEYS ========================
@@ -121,7 +124,9 @@ ssh -i ssh.key -6 user@[IPv6]`
 
 ### SMB (139/445)
 
-```nmap -p 445 -vv --script="smb-vuln-*,smb-enum-*" <[HOST IP]>
+`nmap -p 445 -vv --script="smb-vuln-*,smb-enum-*" <[HOST IP]>`
+
+```
 
 SMBDUMP
 smbdump <HOST IP>
