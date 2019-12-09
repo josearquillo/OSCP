@@ -139,9 +139,8 @@ https://github.com/SecureAuthCorp/impacket/blob/master/examples/psexec.py
 `nmap -p 445 -vv --script="smb-vuln-*,smb-enum-*" <[HOST IP]>`
 
 ```
-
 SMBDUMP
-smbdump <HOST IP>
+smbdump -H <HOST IP>
 
 ENUM4LINUX
 enum4linux -a <[HOST IP]>
