@@ -129,6 +129,8 @@ KERBEROASTING:
 1) GET TICKET
 https://github.com/SecureAuthCorp/impacket/blob/master/examples/GetUserSPNs.py
 
+`./GetUserSPNs.py -dc-ip 10.10.10.161 pentestlab.local/test`
+
 2) BRUTEFORCE TICKET USING JOHN
 
 3) GET SESSION USING ADMIN CREDENTIALS
